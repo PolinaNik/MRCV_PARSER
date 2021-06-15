@@ -1,5 +1,4 @@
 import os
-import itertools
 from datetime import datetime
 from datetime import timedelta
 
@@ -16,8 +15,6 @@ def count_messages(messages):
         delta = timedelta(minutes=1)
         if abs(first_time - second_time) > delta and date1[11:] != '00:00' and date2[11:] != '23:59':
             result.append(message)
-            print(date1)
-            print(date2)
         if date1[11:] == '00:00' and date2[11:] != '23:59' and date2[11:] != '00:00':
             result.append(message)
     return result
@@ -25,13 +22,16 @@ def count_messages(messages):
 
 for file in list_of_files:
     lst = []
-    print(file)
     f = open(f'files/{file}', 'r', encoding='utf-8', errors='ignore')
-    mrcv_log = f.readlines()
-    saparator = 'NNNN\n'
-    all_messages = [list(y) for x, y in itertools.groupby(mrcv_log, lambda z: z == saparator) if not x]
-    messages_03 = [item for item in all_messages if item[2][0:2] == '03']
-    result = count_messages(messages_03)
+    mrcv_log = f.read()
+    all_messages = mrcv_log.split('NNNN')
+    parts_message = [list(filter(None, x.split('\n'))) for x in all_messages]
+    correct_messages = []
+    for item in parts_message:
+        if len(item) >= 3:
+            if item[2][0:2] == '03' and len(item[0]) > 10:
+                correct_messages.append(item)
+    result = count_messages(correct_messages)
     lst.append(file)
     lst.append(result)
     result_file.append(lst)
@@ -46,21 +46,7 @@ for item in result_file:
             output.write('NAME OF FILE: '+name+'\n\n')
             for lst in item[1]:
                 for string in lst:
-                    new = ''.join(string)
-                    output.write(new)
-                output.write('NNNN\n')
-
-# with open('mrcv-20210414_010026.log', 'r', encoding='utf-8', errors='ignore') as file:
-#     mrcv_log = file.readlines()
-#
-#
-# saparator = 'NNNN\n'
-#
-# all_messages = [list(y) for x, y in itertools.groupby(mrcv_log, lambda z: z == saparator) if not x]
-#
-# messages_03 = [item for item in all_messages if item[2][0:2] == '03']
-#
-#
-# result = count_messages(messages_03)
+                    output.write(string+'\n')
+                output.write('NNNN\n\n')
 
 
