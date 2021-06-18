@@ -4,6 +4,7 @@ from datetime import timedelta
 
 list_of_files = os.listdir('files')
 result_file = []
+errors = []
 
 def count_messages(messages):
     result = []
@@ -15,6 +16,7 @@ def count_messages(messages):
         delta = timedelta(minutes=1)
         if abs(first_time - second_time) > delta and date1[11:] != '00:00' and date2[11:] != '23:59':
             result.append(message)
+            errors.append(abs(first_time - second_time))
         if date1[11:] == '00:00' and date2[11:] != '23:59' and date2[11:] != '00:00':
             result.append(message)
     return result
@@ -36,17 +38,23 @@ for file in list_of_files:
     lst.append(result)
     result_file.append(lst)
 
-if not os.path.exists('result'):
-    os.makedirs('result')
+if not os.path.exists('result_KRUM'):
+    os.makedirs('result_KRUM')
 
 for item in result_file:
     name = item[0]
     if item[1]:
-        with open(f'result/ERROR_{name}', 'w') as output:
+        with open(f'result_KRUM/ERROR_{name}', 'w') as output:
             output.write('NAME OF FILE: '+name+'\n\n')
             for lst in item[1]:
                 for string in lst:
                     output.write(string+'\n')
                 output.write('NNNN\n\n')
 
+max_error = max(errors)
+min_error = min(errors)
+mod_error = max(set(errors), key=errors.count)
+print(f'Максимальная ошибка составила {max_error},\n'
+      f'Минимальная ошибка составила {min_error},\n'
+      f'Самая часто встречающаяся ошибка {mod_error}')
 
