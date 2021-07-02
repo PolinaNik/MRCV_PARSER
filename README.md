@@ -13,5 +13,6 @@ result_KRUM, result_METAR, result_SIGMET.
 
 В папке, где лежит скрипт, создать папку files и в нее поместить все mrcv логи.
 Запустить нужный скрипт, либо поочередно: parser_mrcv_KRUM.py, parser_mrcv_METAR.py, parser_mrcv_SIGMET.py
+
 _Результат обработки будет находиться в созданных скриптом папках:
 result_KRUM, result_METAR, result_SIGMET._
