@@ -19,3 +19,7 @@ result_KRUM, result_METAR, result_SIGMET.
 
 _Результат обработки будет находиться в созданных скриптом папках:
 result_KRUM, result_METAR, result_SIGMET._
+
+# Совместимость
+
+Python не ниже 5.6
