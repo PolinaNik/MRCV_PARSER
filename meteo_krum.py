@@ -2,13 +2,30 @@ import os
 from datetime import datetime
 from datetime import timedelta
 import re
+import sys
 
 list_of_files = os.listdir('files')
 result_file = []
 errors = []
 
-date_begin = datetime.fromisoformat('2021-09-15T00:00:00')
-date_end = datetime.fromisoformat('2021-09-15T07:00:00')
+d1 = input('Введите дату и время начала в формате ГГГГ-ММ-ДД чч:мм:сс: ')
+d2 = input('Введите дату и время конца в формате ГГГГ-ММ-ДД чч:мм:сс: ')
+
+try:
+    y1 = d1.split(' ')[0]
+    t1 = d1.split(' ')[1]
+    date_begin = datetime.fromisoformat(f'{y1}T{t1}')
+except:
+    print('Неверный формат даты начала')
+    sys.exit()
+
+try:
+    y2 = d2.split(' ')[0]
+    t2 = d2.split(' ')[1]
+    date_end = datetime.fromisoformat(f'{y2}T{t2}')
+except:
+    print('Неверный формат даты конца')
+    sys.exit()
 
 
 def is_int(val):
@@ -23,7 +40,9 @@ def is_int(val):
     except:
         return False
 
+
 pat = re.compile(r'\d{4}')
+
 
 def count_messages(messages):
     result = []
@@ -121,6 +140,8 @@ for item in result_file:
                 for string in lst:
                     output.write(string + '\n')
                 output.write('NNNN\n\n')
+
+print('Скрипт завершен')
 
 # max_error = max(errors)
 # min_error = min(errors)

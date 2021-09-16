@@ -1,18 +1,30 @@
 import os
 from datetime import datetime
 from datetime import timedelta
+import sys
 
 list_of_files = os.listdir('files')
 result_file = []
 errors = []
 
-date_begin = datetime.fromisoformat('2021-09-08T22:30:00')
-date_end = datetime.fromisoformat('2021-09-09T00:30:00')
+d1 = input('Введите дату и время начала в формате ГГГГ-ММ-ДД чч:мм:сс: ')
+d2 = input('Введите дату и время конца в формате ГГГГ-ММ-ДД чч:мм:сс: ')
 
-# time1 = f'{item[0][0:4]}/{item[0][4:6]}/{item[0][6:8]} {item[0][8:10]}:{item[0][10:12]}:{item[0][12:14]}'
-#             try:
-#                 time = datetime.strptime(time1, '%Y/%m/%d %H:%M:%S')
+try:
+    y1 = d1.split(' ')[0]
+    t1 = d1.split(' ')[1]
+    date_begin = datetime.fromisoformat(f'{y1}T{t1}')
+except:
+    print('Неверный формат даты начала')
+    sys.exit()
 
+try:
+    y2 = d2.split(' ')[0]
+    t2 = d2.split(' ')[1]
+    date_end = datetime.fromisoformat(f'{y2}T{t2}')
+except:
+    print('Неверный формат даты конца')
+    sys.exit()
 
 for file in list_of_files:
     lst = []
@@ -36,5 +48,6 @@ for file in list_of_files:
                     if time >= date_begin:
                         correct_items.append(item)
 
+print('Найдены следующие сообщения FARA за указанный период:')
 for x in correct_items:
     print(x)
